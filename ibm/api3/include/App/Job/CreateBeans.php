@@ -40,6 +40,20 @@ abstract class App_Job_CreateBeans
         return $decorator;
     }
 
+    /**
+     * @param $relationship - relationship name
+     * @param $lhs          - sugarbean
+     * @param $rhs         -   sugarbean
+     * @param $attributes  - other attributes in relationship
+     */
+    public function relationshipAdd($relationship, $lhs, $rhs, $attributes = array())
+    {
+        $lhs->load_relationship($relationship);
+        $lhs->$relationship->add($rhs->id, $attributes, true);
+        $relElement = array('rel' => $relationship, 'lhs' => $lhs, 'rhs' => $rhs);
+        array_push($this->cleanupReleationships, $relElement);
+    }
+
     /*
      * create an calls bean for use in setup
      */

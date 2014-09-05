@@ -107,7 +107,7 @@ abstract class Api_Request_Abstract
         foreach ($this->base_resources as $resource) {
             if ($resource == '?') {
                 $resource = array_shift($this->resources);
-                if (get_class(current($this->resources)) != 'Api_Request_Fields') {
+                if (get_class(current($this->resources)) == 'Api_Request_Fields') {
                     $fields = array_shift($this->resources);
                     $resource .= '?' . $fields->getFieldsString();
                 }

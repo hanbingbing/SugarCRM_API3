@@ -11,9 +11,6 @@ class Api_Response_Parser_Abstract
     public $passCount = 0;
     public $failCount = 0;
     public $failMessages = array();
-    protected $errorCodeField = "error_code";
-    protected $errorMsgField = "error_msg";
-    protected $errorFeedbackField = "error_feedback";
     public $resultsStatusString = '';
     protected $tableField = 'module_name';
     public $cleanupSQL = array();
@@ -63,29 +60,9 @@ class Api_Response_Parser_Abstract
 
                 if ($rc) {
                     $this->debugMsg($expect['op'] . " pass for field $field");
+                    $this->parseForCleanup($responseObj, $parentresponseObject);
                 } else {
                     $this->debugMsg($expect['op'] . " fail for field $field");
-                }
-                if ($field == $this->errorCodeField) {
-                    if ($rc) {
-                        if (isset($responseObj->action) && $responseObj->action == 'create') {
-                            $this->parseForCleanup($field, $responseObj, $parentresponseObject);
-                        }
-                        // on success, check for create actions so they can be cleaned up
-                        $this->debugMsg("parseResult::field test pass: $field");
-                    } else {
-                        $this->debugMsg("parseResult::field test fail: $field");
-                        // add any response errors to err msg list
-                        $errMsgField = $this->errorMsgField;
-                        if (isset($responseObj->$errMsgField)) {
-                            $msg = "Error code message: " . $responseObj->$errMsgField;
-                            $errFeedbackField = $this->errorFeedbackField;
-                            if (isset($responseObj->$errFeedbackField)) {
-                                $msg .= ": " . implode(', ', $responseObj->$errFeedbackField);
-                            }
-                            $this->failMessages[] = $this->_jobName . " : " . $msg;
-                        }
-                    }
                 }
 
             } else {
@@ -132,24 +109,8 @@ class Api_Response_Parser_Abstract
     /*
      * try to clean up any created items
      */
-    public function parseForCleanup($field, $responseObj, $parentresponseObject)
+    public function parseForCleanup($responseObj, $parentresponseObject)
     {
-        if (isset($responseObj->id)) {
-            $id = $responseObj->id;
-        }
-        if (isset($responseObj->id_field)) {
-            $idField = $responseObj->id_field;
-        } else {
-            $idField = 'id';
-        }
-        $tableField = $this->tableField;
-        if (isset($responseObj->$tableField)) {
-            $table = $responseObj->$tableField;
-        }
-        if (!empty($id) && !empty($table)) {
-            $sql = "DELETE FROM $table WHERE $idField = '$id'";
-            $this->cleanupSQL[] = $sql;
-        }
     }
 
     /*

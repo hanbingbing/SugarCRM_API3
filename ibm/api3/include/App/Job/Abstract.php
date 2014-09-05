@@ -51,8 +51,12 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
         'cleanup' => true
     );
 
+    const CLEAN_AUTOMATIC = 'automatic';
+    const CLEAN_DEFERRED = 'deferred';
+    const CLEAN_MANUAL = 'manual';
+
     // how to cleanup
-    public $cleanMode = 'automatic';  // deferred, manual
+    public $cleanMode = App_Job_Abstract::CLEAN_AUTOMATIC;  // deferred, manual
 
     public $api;
 
@@ -122,7 +126,7 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
     public function preSetup($params = array())
     {
         // for deferred cleanup, this is the time to run it
-        if ($this->cleanMode == "automatic" || $this->cleanMode == "deferred") {
+        if ($this->cleanMode == App_Job_Abstract::CLEAN_AUTOMATIC || $this->cleanMode == App_Job_Abstract::CLEAN_DEFERRED) {
             $file = "." . $this->job . ".cln";
             if (file_exists($file)) {
                 $cleanupSQL = unserialize(file_get_contents($file));
@@ -199,6 +203,7 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
 
             if ($parser) {
                 $this->allParsers[] = $parser;
+                echo("\n");
                 if ($parser->debug) {
                     $parser->resultsStatusString .= "R";
                 } else {
@@ -277,7 +282,7 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
 
         unset($this->cleanupReleationships);
 
-        if ($this->cleanMode == 'automatic') {
+        if ($this->cleanMode == App_Job_Abstract::CLEAN_AUTOMATIC) {
             $db = '';
             if (isset($GLOBALS['db'])) {
                 $db = $GLOBALS['db'];
@@ -298,7 +303,7 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
             if (isset($GLOBALS) && isset($GLOBALS['db']) && is_object($GLOBALS['db'])) {
                 $GLOBALS['db']->commit();
             }
-        } elseif ($this->cleanMode == 'deferred' && count($this->cleanupSQL)) {
+        } elseif ($this->cleanMode == App_Job_Abstract::CLEAN_DEFERRED && count($this->cleanupSQL)) {
             // deferred mode for developers wanting to look at db
             // after a test has run. Save cleanup steps, but run them
             // on next job invocation

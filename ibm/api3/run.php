@@ -71,8 +71,8 @@ try {
             );
             $app->exec($job, true);
         }
+        echo $app->getTestResult();
     }
-    echo $app->getTestResult();
 } catch (SugarCLIException $e) {
     sugar_die($e->getMessage());
 }
