@@ -191,7 +191,7 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
      */
     public function test($params = array())
     {
-
+        $first = true;
         while($response = $this->api->shiftResponse()){
             if($response->request instanceof Api_Request_OAuth2Api_token){
                 continue;
@@ -203,11 +203,13 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
 
             if ($parser) {
                 $this->allParsers[] = $parser;
-                echo("\n");
                 if ($parser->debug) {
                     $parser->resultsStatusString .= "R";
                 } else {
-                    echo get_class($this)."=>R";
+                    if($first){
+                        echo get_class($this)."=>R";
+                        $first = false;
+                    }
                 }
                 $results = $parser->parseResponse($response);
             } else {
@@ -367,6 +369,9 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
 
     public function apiCall()
     {
+        if($this->inTestSuite){
+            $this->api->disableDumpResponse();
+        }
         foreach($this->requests as $request){
             $this->api->sugarCall($request);
         }
