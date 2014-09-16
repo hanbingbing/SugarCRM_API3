@@ -395,4 +395,9 @@ abstract class App_Job_Abstract extends  App_Job_CreateBeans implements App_Job_
     public function apiDisableDumpResponse(){
         $this->api->disableDumpResponse();
     }
+
+    public function getLastCreatedRecord(){
+        unset($GLOBALS['last_created_record']);
+        return Api_Response_Parser_Abstract::USE_LAST_CREATED_RECORD;
+    }
 }

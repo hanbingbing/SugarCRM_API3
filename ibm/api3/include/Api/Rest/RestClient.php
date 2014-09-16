@@ -167,6 +167,18 @@ class Api_Rest_RestClient implements Iterator, ArrayAccess
         if (strtoupper($method) == 'POST') {
             $curlopt[CURLOPT_POST] = TRUE;
             $curlopt[CURLOPT_POSTFIELDS] = $client->format_query($parameters);
+        } elseif (strtoupper($method) == 'PUT') {
+            $curlopt[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
+            if(!empty($parameters['XDEBUG_SESSION_START'])){
+                $client->url .= strpos($client->url, '?') ? '&' : '?';
+                $client->url .= 'XDEBUG_SESSION_START='.$parameters['XDEBUG_SESSION_START'];
+                unset($parameters['XDEBUG_SESSION_START']);
+            }
+            $json = json_encode($parameters);
+            $curlopt[CURLOPT_POSTFIELDS] = $json;
+            $curlopt[CURLOPT_HTTPHEADER][] = 'Content-type: application/json';
+            $curlopt[CURLOPT_HTTPHEADER][] = 'Content-Length: ' . strlen($json);
+//            $curlopt[CURLOPT_HTTPHEADER][] = 'X-HTTP-Method-Override: PUT');
         } elseif (strtoupper($method) != 'GET') {
             $curlopt[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
             $curlopt[CURLOPT_POSTFIELDS] = $client->format_query($parameters);

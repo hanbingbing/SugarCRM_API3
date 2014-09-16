@@ -15,6 +15,7 @@ class Api_Response_Parser_Abstract
     protected $tableField = 'module_name';
     public $cleanupSQL = array();
     public $parentModule;
+    const USE_LAST_CREATED_RECORD = 'use_last_created_record';
 
 
     public function __construct($parserName = '')
@@ -183,6 +184,11 @@ class Api_Response_Parser_Abstract
             }
 
         }
+
+        if($expectedValue === Api_Response_Parser_Abstract::USE_LAST_CREATED_RECORD){
+            $expectedValue = $GLOBALS['use_last_created_record'];
+        }
+
         if ($resultValue == $expectedValue) {
             $rc = $this->passResult();
         } else {
@@ -197,6 +203,9 @@ class Api_Response_Parser_Abstract
      */
     public function assertNotEquals($resultValue, $expectedValue, $failMsg = '')
     {
+        if($expectedValue === Api_Response_Parser_Abstract::USE_LAST_CREATED_RECORD){
+            $expectedValue = $GLOBALS['use_last_created_record'];
+        }
         if ($resultValue != $expectedValue) {
             $rc = $this->passResult();
         } else {
@@ -275,6 +284,9 @@ class Api_Response_Parser_Abstract
 
     public function assertIndexOfArrayEquals($resultValue, $expectedArray, $failMsg = '')
     {
+        if($expectedArray['value'] === Api_Response_Parser_Abstract::USE_LAST_CREATED_RECORD){
+            $expectedArray['value'] = $GLOBALS['use_last_created_record'];
+        }
         $failMsg = __FUNCTION__ . " failure on field '" .
             $expectedArray['field'] . "', expected " . $expectedArray['value'];
 

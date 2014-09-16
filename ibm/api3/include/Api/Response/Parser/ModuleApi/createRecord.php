@@ -10,7 +10,7 @@ class Api_Response_Parser_ModuleApi_createRecord extends Api_Response_Parser_Abs
 
     public function parseForCleanup($responseObj, $parentresponseObject)
     {
-        $id = $responseObj->id;
+        $GLOBALS['last_created_record'] = $id = $responseObj->id;
         $module = $responseObj->_module;
 
         if(!empty($module) && !empty($module)){
