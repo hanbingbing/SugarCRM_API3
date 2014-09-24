@@ -77,6 +77,14 @@ abstract class Api_Request_Abstract
     }
 
     /**
+     * @param string $payloads
+     */
+    public function setPayloadsJSON($payloads)
+    {
+        $this->payloads = (array)json_decode($payloads);
+    }
+
+    /**
      * @return string
      */
     public function getPayloads()

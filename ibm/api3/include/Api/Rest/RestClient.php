@@ -224,6 +224,10 @@ class Api_Rest_RestClient implements Iterator, ArrayAccess
     {
         $headers = array();
         $http_ver = strtok($response, "\n");
+        if(preg_match("/^HTTP\/\d\.\d 1\d\d/i",$http_ver)){
+            strtok("\n");
+            $http_ver = strtok("\n");
+        }
 
         while ($line = strtok("\n")) {
             if (strlen(trim($line)) == 0) break;
