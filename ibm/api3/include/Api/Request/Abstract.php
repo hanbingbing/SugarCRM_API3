@@ -115,17 +115,15 @@ abstract class Api_Request_Abstract
         foreach ($this->base_resources as $resource) {
             if ($resource == '?') {
                 $resource = array_shift($this->resources);
-                if (get_class(current($this->resources)) == 'Api_Request_Fields') {
-                    $fields = array_shift($this->resources);
-                    $resource .= '?' . $fields->getFieldsString();
-                }
             }
             $uri .= '/' . $resource;
         }
 
-        foreach ($resources as $resource) {
+        foreach ($this->resources as $resource) {
             if (get_class($resources) == 'string') {
                 $uri .= '/' . $resources;
+            } else if (is_a($resource, 'Api_Request_RequestExtension')) {
+                $uri .= '?' . $resource->getExtensions();
             }
         }
 
@@ -143,9 +141,9 @@ abstract class Api_Request_Abstract
                 $requestClassName = $this->request_name;
             }
             $parserClassName = 'Api_Response_Parser_' . str_replace('Api_Request_', '', $requestClassName);
-            if(class_exists($parserClassName)){
+            if (class_exists($parserClassName)) {
                 $this->parser = new $parserClassName();
-            }else{
+            } else {
                 $this->parser = new Api_Response_Parser_Abstract();
             }
         } else {

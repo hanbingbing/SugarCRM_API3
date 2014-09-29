@@ -20,7 +20,7 @@ class Job_Tasks_41709Test extends App_Job_Abstract
 //        $this->cleanMode = App_Job_Abstract::CLEAN_DEFERRED;
         parent::run($params);
 
-        $request = new Api_Request_ModuleApi_createRecord();
+        $request = new Api_Request_ModuleApi_create();
         $request->addResource('Tasks'); //set module name
         $request->getParser()->setExpected('assertEquals', 'error', 'missing_parameter');
         $request->getParser()->setExpected(
@@ -46,7 +46,7 @@ class Job_Tasks_41709Test extends App_Job_Abstract
         $this->addRequest($request);
 
 
-        $request = new Api_Request_ModuleApi_createRecord();
+        $request = new Api_Request_ModuleApi_create();
         $request->addResource('Tasks'); //set module name
         $request->getParser()->setExpectedDefaults();
         $request->getParser()->setExpected('assertEquals', 'assigned_user_id', $this->user->id);

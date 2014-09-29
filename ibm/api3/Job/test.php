@@ -6,7 +6,7 @@ class Job_test extends App_Job_Abstract
     {
         $this->apiEnableDumpResponse();
         parent::run($params);
-        $request = new Api_Request_CurrentUserApi_retrieveCurrentUser();
+        $request = new Api_Request_CurrentUserApi_retrieve();
         $request->getParser()->setExpectedDefaults();
         $request->getParser()->setExpected(
             'assertIndexOfArrayEquals',

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Class Api_Request_ModuleApi_createRecord
+ * Class Api_Request_ModuleApi_create
  * POST rest/v10/<module>
  */
-class Api_Request_ModuleApi_createRecord extends Api_Request_Abstract
+class Api_Request_ModuleApi_create extends Api_Request_Abstract
 {
     protected $base_resources = array('?');
 

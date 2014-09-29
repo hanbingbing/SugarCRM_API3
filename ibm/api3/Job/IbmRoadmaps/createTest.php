@@ -47,7 +47,7 @@ class Job_IbmRoadmaps_createTest extends App_Job_Abstract
 //        $this->cleanMode = App_Job_Abstract::CLEAN_MANUAL;
         parent::run($params);
 
-        $request = new Api_Request_ModuleApi_createRecord();
+        $request = new Api_Request_ModuleApi_create();
         $request->addResource('ibm_RevenueLineItems'); //set module name
         $request->getParser()->setExpectedDefaults();
         $request->getParser()->setExpected('assertEquals', 'id', $this->rliId);
@@ -94,7 +94,7 @@ class Job_IbmRoadmaps_createTest extends App_Job_Abstract
 //        $this->addRequest($request);
 
 
-        $request = new Api_Request_RelateApi_filterRelated();
+        $request = new Api_Request_RelateApi_filterRelatedRecords();
         $request->addResource('ibm_RevenueLineItems');
         $request->addResource('68a9e90f-faf3-68e7-4a43-5406c08f25dc');
 //        $request->addResource($this->rliId);

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Class Api_Request_RelateRecordApi_deleteRelatedRecord
+ * Class Api_Request_RelateRecordApi_deleteRelatedLink
  * DELETE rest/v10/<module>/<record>/link/<link_name>/<remote_id>
  */
-class Api_Request_RelateRecordApi_deleteRelatedRecord
+class Api_Request_RelateRecordApi_deleteRelatedLink
     extends Api_Request_RelateRecordApi_createRelatedLink
 {
     protected $request_type = Api_Request_Abstract::TYPE_DELETE;
