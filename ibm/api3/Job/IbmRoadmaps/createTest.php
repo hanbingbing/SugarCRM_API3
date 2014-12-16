@@ -94,7 +94,7 @@ class Job_IbmRoadmaps_createTest extends App_Job_Abstract
 //        $this->addRequest($request);
 
 
-        $request = new Api_Request_RelateApi_filterRelatedRecords();
+        $request = new Api_Request_RelateApi_listRelatedRecords();
         $request->addResource('ibm_RevenueLineItems');
         $request->addResource('68a9e90f-faf3-68e7-4a43-5406c08f25dc');
 //        $request->addResource($this->rliId);

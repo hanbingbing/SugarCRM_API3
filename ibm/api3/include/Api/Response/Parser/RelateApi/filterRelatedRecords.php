@@ -1,6 +1,6 @@
 <?php
 
-class Api_Response_Parser_RelateApi_filterRelated extends Api_Response_Parser_Abstract
+class Api_Response_Parser_RelateApi_filterRelatedRecords extends Api_Response_Parser_Abstract
 {
     public function setExpectedDefaults()
     {
