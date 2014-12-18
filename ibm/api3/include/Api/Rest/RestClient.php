@@ -212,12 +212,11 @@ class Api_Rest_RestClient implements Iterator, ArrayAccess
 
     public function format_query($parameters, $primary = '=', $secondary = '&')
     {
-        $query = "";
-        foreach ($parameters as $key => $value) {
-            $pair = array(urlencode($key), urlencode($value));
-            $query .= implode($primary, $pair) . $secondary;
+        if(empty($parameters)){
+            return '';
         }
-        return rtrim($query, $secondary);
+
+        return http_build_query($parameters,'',$secondary);
     }
 
     public function parse_response($response)
